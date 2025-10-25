@@ -474,10 +474,19 @@ fn expr_for_struct(
             metadata.apply_to_schema(&mut schema_expr);
             field.validation_attrs.apply_to_schema(&mut schema_expr);
 
-            quote! {
-                {
-                    #type_def
-                    schemars::_private::insert_object_property::<#ty>(object_validation, #name, #has_default, #required, #schema_expr);
+            if metadata.is_any {
+                quote! {
+                    {
+                        #type_def
+                        schemars::_private::insert_object_property::<()>(object_validation, #name, #has_default, #required, ::schemars::schema::Schema::Bool(true));
+                    }
+                }
+            } else {
+                quote! {
+                    {
+                        #type_def
+                        schemars::_private::insert_object_property::<#ty>(object_validation, #name, #has_default, #required, #schema_expr);
+                    }
                 }
             }
         })

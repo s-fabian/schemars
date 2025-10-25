@@ -9,6 +9,7 @@ pub struct SchemaMetadata<'a> {
     pub write_only: bool,
     pub examples: &'a [syn::Path],
     pub default: Option<TokenStream>,
+    pub is_any: bool,
 }
 
 impl<'a> SchemaMetadata<'a> {

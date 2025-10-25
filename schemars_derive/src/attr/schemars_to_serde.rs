@@ -24,6 +24,8 @@ pub(crate) static SERDE_KEYWORDS: &[&str] = &[
     "transparent",
     // Special case - `bound` is removed from serde attrs, so is only respected when present in schemars attr.
     "bound",
+    // Special case too.
+    "any",
     // Special cases - `with`/`serialize_with` are passed to serde but not copied from schemars attrs to serde attrs.
     // This is because we want to preserve any serde attribute's `serialize_with` value to determine whether the field's
     // default value should be serialized. We also check the `with` value on schemars/serde attrs e.g. to support deriving
@@ -71,7 +73,10 @@ fn process_attrs(ctxt: &Ctxt, attrs: &mut Vec<Attribute>) {
             .into_iter()
             .filter_map(|meta| {
                 let keyword = get_meta_ident(&meta)?;
-                if SERDE_KEYWORDS.contains(&keyword.as_ref()) && !keyword.ends_with("with") {
+                if SERDE_KEYWORDS.contains(&keyword.as_ref())
+                    && !keyword.ends_with("with")
+                    && &keyword != "any"
+                {
                     Some((meta, keyword))
                 } else {
                     None
@@ -90,6 +95,7 @@ fn process_attrs(ctxt: &Ctxt, attrs: &mut Vec<Attribute>) {
             if !schemars_meta_names.contains(&i)
                 && SERDE_KEYWORDS.contains(&i.as_ref())
                 && i != "bound"
+                && i != "any"
             {
                 serde_meta.push(meta);
             }

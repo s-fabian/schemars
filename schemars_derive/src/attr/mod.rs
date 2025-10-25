@@ -26,6 +26,7 @@ pub struct Attrs {
     pub repr: Option<syn::Type>,
     pub crate_name: Option<syn::Path>,
     pub is_renamed: bool,
+    pub is_any: bool,
 }
 
 #[derive(Debug)]
@@ -71,6 +72,7 @@ impl Attrs {
             read_only: false,
             write_only: false,
             default: None,
+            is_any: self.is_any,
         }
     }
 
@@ -164,6 +166,10 @@ impl Attrs {
 
                 _ if ignore_errors => {}
 
+                Meta::Path(p) if p.is_ident("any") => {
+                    self.is_any = true;
+                }
+
                 Meta::List(m) if m.path.is_ident("inner") && attr_type == "schemars" => {
                     // This will be processed with the validation attributes.
                     // It's allowed only for the schemars attribute because the
@@ -198,6 +204,7 @@ impl Attrs {
                 repr: None,
                 crate_name: None,
                 is_renamed: _,
+                is_any: false,
             } if examples.is_empty())
     }
 }
