@@ -36,6 +36,7 @@ bigdecimal04 = { version = "0.4", default-features = false, optional = true, pac
 enumset = { version = "1.0", optional = true }
 smol_str = { version = "0.1.17", optional = true }
 semver = { version = "1.0.9", features = ["serde"], optional = true }
+sqlx = { version = "0.9.0-alpha.1", default-features = false, features = ["json"], optional = true }
 
 [dev-dependencies]
 pretty_assertions = "1.2.1"
@@ -66,6 +67,7 @@ raw_value = ["serde_json/raw_value"]
 bigdecimal = ["bigdecimal03"]
 
 rust_decimal_float = ["rust_decimal"]
+sqlx09 = ["sqlx"]
 
 ui_test = []
 

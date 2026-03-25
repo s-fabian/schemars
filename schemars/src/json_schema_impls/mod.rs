@@ -78,6 +78,8 @@ mod serdejson;
 mod smallvec;
 #[cfg(feature = "smol_str")]
 mod smol_str;
+#[cfg(feature = "sqlx09")]
+mod sqlx;
 mod time;
 mod tuple;
 #[cfg(feature = "url")]
